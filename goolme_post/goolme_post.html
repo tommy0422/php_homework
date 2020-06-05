@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="goolme_post.css" />
+
+  <title>投稿画面</title>
+  <style>
+    .texttext {
+
+      background-color: white;
+
+      opacity: 90%;
+
+      line-height: -100x;
+
+    }
+  </style>
+</head>
+
+
+<body>
+  <header id="header">
+
+    <h1 class="name">Goolme</h1>
+
+    <div class="wrapper">
+
+      <div class="search-area">
+
+        <form>
+          <input type="text" id="search-text" placeholder="検索ワードを入力">
+
+        </form>
+        <div class="search-result">
+
+          <div class="search-result__hit-num"></div>
+
+          <div id="search-result__list"></div>
+
+        </div>
+      </div>
+      <a class="btn"></a>
+
+      <div class="drawr">
+
+        <ul id="menu">
+
+          <li><a href="../goolme_top/goolme_top.html">ログアウト</a></li>
+
+          <!-- <li><a href="#">メニュー2</a></li>
+<li><a href="#">メニュー3</a></li>
+<li><a href="#">メニュー4</a></li>
+<li><a href="#">メニュー5</a></li> -->
+        </ul>
+      </div>
+  </header>
+  <main>
+    <div class="allbox">
+
+      <div class="leftbox">
+
+        <div class="leftbox_text">
+
+          <h1>Goolme Share</h1>
+          <!-- 入力画面 -->
+          <p>
+            <label for="postname">投稿名</label>
+
+            <input type="text" id="postname">
+
+          </p>
+          <p>
+            <label for="restaurant">店舗名</label>
+
+            <input type="text" id="restaurant">
+
+          </p>
+          <p>評価
+            <select name="review" id="review">
+
+              <option value="">選択してください</option>
+
+              <option value="★">★</option>
+
+              <option value="★★">★★</option>
+
+              <option value="★★★">★★★</option>
+
+              <option value="★★★★">★★★★</option>
+
+              <option value="★★★★★">★★★★★</option>
+
+            </select></p>
+          <div id="imgSample" style="display:block;width:auto;height:200px;background-color:#c0c0c0;"></div>
+          <input type="file" id="btnUpload" value="アップロード">
+
+          <p>
+            <label for="link">URL</label>
+
+            <input type="text" id="link">
+
+          </p>
+          <p>
+            <textarea name="" id="text" cols="30" rows="10"></textarea>
+
+          </p>
+          <p>
+            <a class="btn-gradient-3d-orange">Share</a>
+
+          </p>
+        </div>
+      </div>
+      <div class="rightbox">
+
+        <!-- データ出力場所 -->
+        <ul id="output"></ul>
+
+      </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+
+        apiKey: "AIzaSyBuH19W7v8587ozUWI0hTgbkFYf5Tm5Dcg",
+
+        authDomain: "goolme-17628.firebaseapp.com",
+
+        databaseURL: "https://goolme-17628.firebaseio.com",
+
+        projectId: "goolme-17628",
+
+        storageBucket: "goolme-17628.appspot.com",
+
+        messagingSenderId: "123530588174",
+
+        appId: "1:123530588174:web:15cacad39744c0176e8c5f",
+
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      //ストレージのルートのリファレンスを取得
+      var storageRef = firebase.storage().ref();
+      //ストレージのルートにあるsample.pngのリファレンスを取得    
+      var imgSample = storageRef.child('sample.png');
+
+      window.onload = function () {
+        //htmlロード完了したらストレージの画像を表示してみる
+        imgSample.getDownloadURL().then(function (url) {
+          document.getElementById("imgSample").style.backgroundImage = "url(" + url + ")";
+        }).catch(function (error) {
+          // Handle any errors
+          console.log(error);
+        });
+      };
+    </script>
+
+
+    <script>
+      $(function ($) {
+
+        WindowHeight = $(window).height();
+
+        $('.drawr').css('height', WindowHeight); //メニューをwindowの高さいっぱいにする
+
+
+
+        $(document).ready(function () {
+
+          $('.btn').click(function () { //クリックしたら
+
+            if ($('.drawr').is(":animated")) {
+
+              return false;
+
+            } else {
+
+              $('.drawr').animate({ width: 'toggle' }); //animateで表示・非表示
+
+              $(this).toggleClass('peke'); //toggleでクラス追加・削除
+
+              return false;
+
+            }
+          });
+        });
+
+
+        //別領域をクリックでメニューを閉じる
+        $(document).click(function (event) {
+
+          if (!$(event.target).closest('.drawr').length) {
+
+            $('.btn').removeClass('peke');
+            $('.drawr').hide();
+          }
+        });
+
+
+      });
+      // 日時をいい感じの形式にする関数
+      function convertFromFirestoreTimestampToDatetime(timestamp) {
+
+        const _d = timestamp ? new Date(timestamp * 1000) : new Date();
+
+        const Y = _d.getFullYear();
+
+        const m = (_d.getMonth() + 1).toString().padStart(2, '0');
+
+        const d = _d.getDate().toString().padStart(2, '0');
+
+        const H = _d.getHours().toString().padStart(2, '0');
+
+        const i = _d.getMinutes().toString().padStart(2, '0');
+
+        const s = _d.getSeconds().toString().padStart(2, '0');
+
+        return `${Y}/${m}/${d} ${H}:${i}:${s}`;
+
+      }
+      // データベースの設定を記述
+      const db = firebase.firestore().collection('Goolme');
+
+      //送信ボタンクリック時にデータを送信する処理
+      $('.btn-gradient-3d-orange').on('click', function () {
+
+        const dataObject = {
+
+          postname: $('#postname').val(),
+
+          restaurant: $('#restaurant').val(),
+
+          URL: $('#link').val(),
+
+          review: $('#review').val(),
+
+          text: $('#text').val(),
+
+          time: firebase.firestore.FieldValue.serverTimestamp(),
+
+        };
+        db.add(dataObject);
+
+
+        //送信後にからにする処理
+        $('#postname').val('');
+        $('#restaurant').val('');
+        $('#link').val('');
+        $('#review').val('選択してください');
+        $('#text').val('');
+      });
+
+
+      //データをリアルタイムに取得する処理
+      db.orderBy('time', 'asc').onSnapshot(function (querySnapshot) {
+
+        // まずはconsole.log()で出力してデータの形を確認！
+        console.log(querySnapshot.length);
+        let str = '';
+
+        querySnapshot.docs.forEach(function (doc) {
+
+          const id = doc.id;
+
+          const data = doc.data();
+
+          const datetime = convertFromFirestoreTimestampToDatetime(data.time.seconds);
+
+          str += '<li class="texttext" id=" + id + " </li>';
+
+          str += '<h1>' + data.postname + '</h1>';
+
+          str += '<h2>' + "店名：" + data.restaurant + '</h2>';
+
+          str += '<p>' + "評価：" + data.review + '</p>';
+
+          str += '<p>' + "店舗情報：" + data.URL + '</p>';
+
+          str += '<p>' + data.text + '</p>';
+
+          str += '<p class=time>' + datetime + '</p>';
+
+          str += '<hr>'
+
+        });
+        $('#output').html(str);
+      });
+
+
+      //ストレージへアップロードする
+      var btnUploadChange = function (ev) {
+
+        //ストレージへアップロードするファイルのパスを生成する
+        var uploadRef = storageRef.child('upload.png');
+
+        const f = ev.target.files[0];
+
+        uploadRef.put(f).then(function (snapshot) {
+
+          console.log('Uploaded a blob or file!');
+
+
+          //アップロードしたファイルを表示してみる
+          uploadRef.getDownloadURL().then(function (url) {
+
+            console.log("imgSample " + url);
+
+            document.getElementById("imgSample").style.backgroundImage = "url(" + url + ")";
+
+          }).catch(function (error) {
+
+            // Handle any errors
+            console.log(error);
+          });
+
+
+        });
+      };
+      //htmlロードが完了したらボタンにイベントを設定
+      window.onload = function () {
+
+        document.getElementById("btnUpload").onchange = btnUploadChange;
+
+      };
+    </script>
+
+
+    <!-- // -->
+    <!-- ▼今回のスクリプト本体 -->
+    <!-- //9
+//
+// -->
+    <script type="text/javascript">
+
+      $(".name")
+        .children()
+        .addBack()
+        .contents()
+        .each(function () {
+
+          if (this.nodeType == 3) {
+
+            var $this = $(this);
+
+            $this.replaceWith($this.text().replace(/(\S)/g, "<h1>$&</h1>"));
+
+          }
+        });
+//</script>
+</body>
+
+
+</html>

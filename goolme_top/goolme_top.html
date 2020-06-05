@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="goolme_top.css">
+    <title>トップページ</title>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        let firebaseConfig = {
+            apiKey: "AIzaSyBuH19W7v8587ozUWI0hTgbkFYf5Tm5Dcg",
+            authDomain: "goolme-17628.firebaseapp.com",
+            databaseURL: "https://goolme-17628.firebaseio.com",
+            projectId: "goolme-17628",
+            storageBucket: "goolme-17628.appspot.com",
+            messagingSenderId: "123530588174",
+            appId: "1:123530588174:web:15cacad39744c0176e8c5f"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!--firebase UIの読み込み-->
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+    <script type="text/javascript">
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    //trueにするとsignInSuccessUrlで定めた場所にリダイレクトされる
+                    //falseにするとページは遷移しない
+                    return true;
+                },
+                uiShown: function () {
+                    // ログイン画面が出たときに行う作業
+                }
+
+            },
+            signInFlow: 'popup',
+            //認証成功後のページ
+            signInSuccessUrl: '../goolme_post/goolme_post.html',
+            signInOptions: [
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ],
+            // 利用規約のページ
+            tosUrl: './terms-of-services.html',
+            // プライバシーポリシーのページ
+            privacyPolicyUrl: './privacy-pocily.html'
+        };
+
+        // FirebaseUI ウィジェットの初期化と上のConfigの登録
+        // headでauthentification用のライブラリを読み込まないとfirebase.auth()でエラーが出ます。
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+</head>
+
+<body>
+    <header id="header">
+        <h1 class="name">Goolme</h1>
+    </header>
+    <main>
+        <div class="bigbox">
+            <div class="image">
+                <img src="goolme_top.jpg" alt="">
+            </div>
+            <div class="smallbox">
+                <div class="index">
+                    <h1>美味しいものを共有しよう</h1>
+                    <div class="container">
+                        <!-- <a href="../goolme_post/goolme_post.html" class="btn-gradation">LOGIN</a> -->
+                        <div id="firebaseui-auth-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ▼jQueryの読み込み -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+
+    <!-- ▼今回のスクリプト本体 -->
+    <script type="text/javascript">
+        $(".name").children().addBack().contents().each(function () {
+            if (this.nodeType == 3) {
+                var $this = $(this);
+                $this.replaceWith($this.text().replace(/(\S)/g, "<h1>$&</h1>"));
+            }
+        });
+    </script>
+</body>
+
+</html>

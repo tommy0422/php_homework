@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+}
+
+header {
+  text-align: center;
+  font-size: 20px;
+  background: linear-gradient(-135deg, #e4a972, #9941d8);
+}
+
+header h1 {
+  letter-spacing: 2px;
+  display: inline;
+}
+
+.name h1:nth-child(1) {
+  color: blue;
+}
+.name h1:nth-child(2) {
+  color: red;
+}
+.name h1:nth-child(3) {
+  color: yellow;
+}
+.name h1:nth-child(4) {
+  color: blue;
+}
+.name h1:nth-child(5) {
+  color: green;
+}
+.name h1:nth-child(6) {
+  color: red;
+}
+
+/* 検索ボタン */
+.search-area input[type="text"] {
+  padding: 5px 5px 3px;
+  font-size: 16px;
+  border: 1px solid #d6d6d6;
+}
+
+header form {
+  text-align: right;
+  padding-bottom: 15px;
+  padding-right: 30px;
+}
+
+.search-area input[type="text"]:focus {
+  background: #f9f9f9;
+}
+
+.search-result {
+  margin-top: 20px;
+}
+.hit-num__text span {
+  font-weight: bold;
+}
+#search-result__list {
+  margin-top: 15px;
+}
+#search-result__list span {
+  display: inline-block;
+  margin-right: 15px;
+  padding: 5px;
+  background: #f2f2f2;
+}
+.target-area {
+  margin-top: 50px;
+}
+.target-area .hidden {
+  display: none;
+}
+
+/* ドロワーボタン */
+.btn {
+  background: transparent url(btn.png) no-repeat 0 0;
+  display: block;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 200;
+}
+.peke {
+  background-position: -35px 0;
+}
+.drawr {
+  display: none;
+  background-color: rgba(159, 14, 255, 0.6);
+  position: absolute;
+  top: 0px;
+  right: 0;
+  width: 260px;
+  padding: 60px 0 20px 20px;
+  z-index: 100;
+}
+#menu li {
+  width: 260px;
+  list-style: none;
+}
+#menu li a {
+  color: #fff;
+  display: block;
+  padding: 15px;
+}
+
+body {
+  background-image: url(post.png);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.allbox {
+  display: flex;
+  justify-content: center;
+}
+
+.leftbox {
+  background-color: oldlace;
+  line-height: 40px;
+  width: 20%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  text-align: center;
+}
+
+.leftbox_text {
+  position: sticky;
+  top: 100px;
+}
+
+#imgSample {
+  margin: auto;
+  padding: 40px;
+  width: 100px;
+}
+
+.btn-gradient-3d-orange {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  border-radius: 4px;
+  color: #ffffff;
+  background-image: linear-gradient(45deg, #ffc107 0%, #ff8b5f 100%);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+  border-bottom: solid 3px #c58668;
+}
+
+.btn-gradient-3d-orange:active {
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: none;
+}
+
+.rightbox {
+  width: 80%;
+}
+
+/* 投稿エリア */
+
+#output {
+  line-height: -100x;
+  padding: 0px 30px 0px 30px;
+  line-height: 60px;
+  list-style: none;
+}
+
+#output h1 {
+  text-align: center;
+}
+
+#output h2,
+#output p {
+  margin-left: 30px;
+}
+
+.index {
+  color: #ffffff;
+}
+
+.time {
+  text-align: right;
+  margin-right: 20px;
+}
+
+/* メディアクエリ */
+@media screen and (orientation: portrait) {
+  p {
+    font-size: 1em;
+  }
+  .conA p {
+    font-size: 24px;
+  }
+}
